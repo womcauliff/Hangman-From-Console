@@ -1,18 +1,36 @@
 Game = function() {
 
+	//import Word Object
+	var Word = require("./word.js");
+
 	/* Private Variables */
 	var secretWord;
-	var wordList = [
-		{displaytext: "dog"},
-		{displaytext: "cat"},
-		{displaytext: "bat"},
-		{displaytext: "rat"}
-	];
+	var wordList = [];
+
+	/**
+	 * buildList()
+	 *
+	 * Synchronously parses a given file to create Word Objects, 
+	 * adding them to an internal list
+	 *
+	 * @param {string} pathToFile - the relative path to a newline delimited file
+	 */
+	this.buildList = function(pathToFile) {
+		var fs = require('fs');
+
+		fs.readFileSync(pathToFile, 'utf8').split("\n").forEach(
+			function(line, index, arr) {
+				if (index === arr.length - 1 && line === "") { return; }
+				wordList.push(new Word(line.trim()));
+			}
+		);
+	}
 
 	/**
 	 * getSecretWord()
 	 *
 	 * A getter method for the Game Object's secretWord Object
+	 *
 	 * @return {Object} the Word Object
 	 */
 	this.getSecretWord = function() {
