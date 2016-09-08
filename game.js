@@ -4,8 +4,8 @@ Game = function() {
 	var Word = require("./word.js");
 
 	/* Private Variables */
-	var secretWord;
-	var wordList = [];
+	var secretWord;// Word Object
+	var wordList = [];//array of lines from text file
 
 	/**
 	 * buildList()
@@ -21,7 +21,7 @@ Game = function() {
 		fs.readFileSync(pathToFile, 'utf8').split("\n").forEach(
 			function(line, index, arr) {
 				if (index === arr.length - 1 && line === "") { return; }
-				wordList.push(new Word(line.trim()));
+				wordList.push(line.trim());
 			}
 		);
 	}
@@ -40,11 +40,14 @@ Game = function() {
 	/**
 	 * selectWord()
 	 *
-	 * This method randomly selects one of the Word objects from
-	 * an internal list, and assigns it as the secretWord.
+	 * This method randomly selects one of the strings from
+	 * an internal list, uses it to construct a Word Object,
+	 * and assigns it as the secretWord.
 	 */
 	this.selectWord = function() {
-		secretWord = wordList[getRandomInt(0, wordList.length)];
+		console.log("selectWord()");
+		secretWord = new Word(wordList[getRandomInt(0, wordList.length)]);
+		console.log("new Word: " + secretWord.getDisplayText());
 	}
 
 	/**
