@@ -1,0 +1,25 @@
+{
+  "name": "hangman-from-console",
+  "version": "1.0.0",
+  "description": "A console-based hangman app written in Node.js and incorporates objects, user-input, and constructors.",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/womcauliff/Hangman-From-Console.git"
+  },
+  "keywords": [
+    "hangman"
+  ],
+  "author": "womcauliff",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/womcauliff/Hangman-From-Console/issues"
+  },
+  "homepage": "https://github.com/womcauliff/Hangman-From-Console#readme",
+  "dependencies": {
+    "inquirer": "^1.1.3"
+  }
+}
