@@ -6,6 +6,7 @@ Game = function() {
 	/* Private Variables */
 	var secretWord;// Word Object
 	var wordList = [];//array of lines from text file
+	var alphabucket = [];//stores previous guesses
 
 	/**
 	 * buildList()
@@ -70,6 +71,25 @@ Game = function() {
 		min = Math.ceil(min);
 		max = Math.floor(max);
 		return Math.floor(Math.random() * (max - min)) + min;
+	}
+
+	/**
+	 * isNewGuess()
+	 *
+	 * Determines whether a user's guess has already been made in a previous round.
+	 *
+	 * @param {string} guess - a single letter between "a" and "z"
+	 * @return {boolean} true if the latest guess has not previously been guessed
+	 */
+	this.isNewGuess = function(guess) {
+		console.log("\nisNewGuess() : " + guess);
+		var charcode = guess.toUpperCase().charCodeAt();
+		console.log("\ncharcode: " + charcode + " charcode - 65:" + (charcode - 65));
+		if(alphabucket[charcode - 65] !== true) {
+			alphabucket[charcode - 65] = true;
+			return true;
+		}
+		return false;
 	}
 }
 
