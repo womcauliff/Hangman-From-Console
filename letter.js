@@ -4,6 +4,7 @@
  * Represents a letter for a game of hangman.
  */
 Letter = function(lettertext) {
+	console.log("Letter() " + lettertext);
 	var guessed = false;
 	var trueValue = lettertext;
 
@@ -63,10 +64,13 @@ Letter = function(lettertext) {
 		//skip check if object has already been guessed
 		if(!this.isGuessed()) {
 			//check guess against letter object's hidden value
-			if(getTrueValue() === guess) {
+			if(getTrueValue() == guess) {
 				setGuessed(true);
+				return true;
 			}
+			return false;
 		}
+		return false;
 	}
 }
 
