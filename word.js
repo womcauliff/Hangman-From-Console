@@ -2,14 +2,14 @@
 var Letter = require("./letter.js");
 
 Word = function (word) {
-	var actualValue = word;
+	console.log(word);
+	var actualValue = word.toUpperCase();
 	var letterList = [];
 
 	//Parses word parameter into Letter Objects,
 	//adding them to internal array
 	for(var i = 0; i < word.length; i++) {
-		console.log(word[i]);
-		letterList[letterList.length] = new Letter([word[i]]);
+		letterList[letterList.length] = new Letter([word[i].toUpperCase()]);
 	}
 
 	/**
@@ -22,12 +22,32 @@ Word = function (word) {
 	 * substituted for letters not yet correctly guessed.
 	 */
 	this.getDisplayText = function() {
-		console.log("Word.getDisplayText()");
 		var displayText = "";
 		for(var i = 0; i < letterList.length; i++) {
 			displayText += letterList[i].getDisplayText() + " ";
 		}
 		return displayText;
+	}
+
+	this.checkMatches = function(guess) {
+		console.log("Word.checkMatches " + guess);
+		var matchFound = false;
+		for(var i = 0; i < letterList.length; i++) {
+			if(letterList[i].checkMatch(guess)) {
+				console.log("matchFound");
+				matchFound = true;
+			}
+		}
+		return matchFound;
+	}
+
+	this.isGuessed = function() {
+		for (var i = 0; i < letterList.length; i++) {
+			if(!letterList[i].isGuessed()) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
 
