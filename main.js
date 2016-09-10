@@ -1,7 +1,7 @@
 
 var Game = require("./game.js");
 var inquirer = require("inquirer");
-var GameController = new Game();
+var GameController = new Game(6);
 GameController.buildList(
 	'./possible_words.txt',
 	function(err) {
@@ -48,7 +48,46 @@ function gameRound() {
 			}
 		}
 	]).then(function (answer){
-		console.log(answer.letterGuess);
-		gameRound();
+
+		//make guess to Game
+		//Game tells Word to check all Letters
+		//if no matches found, then game removes life
+		//if match is found, Game checks if Word is guessed, thus game is over
+
+
+		GameController.makeGuess(
+			answer.letterGuess,
+			function(err, result) {
+				console.log("GameController.makeGuess callback " + result);
+
+				if(err) {
+					console.log(err);
+					return;
+				}
+
+				// guess was successful
+				if(result == true) {
+					if(GameController.isOver()) {
+						console.log(GameController.getDisplayText()
+							+ "\nYou Win! ");
+					}
+					else {
+						console.log(GameController.getDisplayText());
+						gameRound();
+					}
+				}
+				//guess was unsuccessful
+				else {
+					if(GameController.getTriesLeft() == 0) {
+						console.log("Game Over. You Lost.");
+					}
+					else {
+						console.log(GameController.getDisplayText()
+							+ "\n" + GameController.getTriesLeft() + " tries left.");
+						gameRound();
+					}
+				}
+			}
+		);
 	});
 }
