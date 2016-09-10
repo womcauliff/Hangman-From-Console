@@ -11,11 +11,13 @@ Game = function() {
 	 * buildList()
 	 *
 	 * Synchronously parses a given file to create Word Objects, 
-	 * adding them to an internal list
+	 * adding them to an internal list.
 	 *
 	 * @param {string} pathToFile - the relative path to a newline delimited file
+	 * @param {Function} callback - a function to execute after reading file contents
 	 */
-	this.buildList = function(pathToFile) {
+	this.buildList = function(pathToFile, callback) {
+		console.log("buildList()");
 		var fs = require('fs');
 
 		fs.readFileSync(pathToFile, 'utf8').split("\n").forEach(
@@ -24,6 +26,8 @@ Game = function() {
 				wordList.push(line.trim());
 			}
 		);
+
+		callback(null);
 	}
 
 	/**
@@ -34,6 +38,7 @@ Game = function() {
 	 * @return {Object} the Word Object
 	 */
 	this.getSecretWord = function() {
+		console.log("getSecretWord()");
 		return secretWord;
 	}
 	
@@ -43,11 +48,13 @@ Game = function() {
 	 * This method randomly selects one of the strings from
 	 * an internal list, uses it to construct a Word Object,
 	 * and assigns it as the secretWord.
+	 *
+	 * @param {Function} callback - a function to execute after selecting secret word
 	 */
-	this.selectWord = function() {
+	this.selectWord = function(callback) {
 		console.log("selectWord()");
 		secretWord = new Word(wordList[getRandomInt(0, wordList.length)]);
-		console.log("new Word: " + secretWord.getDisplayText());
+		callback(null);
 	}
 
 	/**
