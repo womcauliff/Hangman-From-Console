@@ -5,26 +5,27 @@ var GameController = new Game(6);
 GameController.buildList(
 	'./possible_words.txt',
 	function(err) {
-		console.log("buildList callback()");
 		if(err) {
 			console.log(err);
 			return;
 		}
 
 		GameController.selectWord(function(err) {
-			console.log("selectWord callback()")
 			if(err) {
 				console.log(err);
 				return;
 			}
-			console.log("word is selected. game beginning.");
+			console.log(
+				"=== HANGMAN ===\n"
+				+ "  ______    \n |      |    \n |           \n |           \n |           \n |           \n_|_________  "
+				+ "\n\nWORD: " + GameController.getDisplayText()
+			);
 			gameRound();
 		});
 	}
 );
 
 function gameRound() {
-	console.log("gameRound()");
 	inquirer.prompt([
 		{
 			name: "letterGuess",
@@ -58,8 +59,6 @@ function gameRound() {
 		GameController.makeGuess(
 			answer.letterGuess,
 			function(err, result) {
-				console.log("GameController.makeGuess callback " + result);
-
 				if(err) {
 					console.log(err);
 					return;
@@ -79,11 +78,33 @@ function gameRound() {
 				//guess was unsuccessful
 				else {
 					if(GameController.getTriesLeft() == 0) {
-						console.log("Game Over. You Lost.");
+						console.log(
+							"  ______    \n |      |    \n |      0    \n |     /|\\  \n |     / \\  \n |           \n_|_________  "
+							+ "\n\nWORD: " + GameController.getDisplayText()
+							+ "\nGame Over. Try Again?");
 					}
 					else {
-						console.log(GameController.getDisplayText()
-							+ "\n" + GameController.getTriesLeft() + " tries left.");
+
+						var outputString = "";							
+						switch(GameController.getTriesLeft()) {
+							case 1:
+								outputString += "  ______    \n |      |    \n |      0    \n |     /|\\  \n |     /     \n |           \n_|_________  "
+								break;
+							case 2:
+								outputString += "  ______    \n |      |    \n |      0    \n |     /|\\  \n |           \n |           \n_|_________  "
+								break;
+							case 3:
+								outputString += "  ______    \n |      |    \n |      0    \n |     /|    \n |           \n |           \n_|_________  "
+								break;
+							case 4:
+								outputString += "  ______    \n |      |    \n |      0    \n |      |    \n |           \n |           \n_|_________  "
+								break;
+							case 5:
+								outputString += "  ______    \n |      |    \n |      0    \n |           \n |           \n |           \n_|_________  "
+								break;
+						}
+						outputString += "\n\nWORD: " + GameController.getDisplayText();
+						console.log(outputString);
 						gameRound();
 					}
 				}

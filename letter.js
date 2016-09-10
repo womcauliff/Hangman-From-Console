@@ -4,7 +4,6 @@
  * Represents a letter for a game of hangman.
  */
 Letter = function(lettertext) {
-	console.log("Letter() " + lettertext);
 	var guessed = false;
 	var trueValue = lettertext;
 

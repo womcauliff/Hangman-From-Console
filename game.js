@@ -19,7 +19,6 @@ Game = function(totalTries) {
 	 * @param {Function} callback - a function to execute after reading file contents
 	 */
 	this.buildList = function(pathToFile, callback) {
-		console.log("buildList()");
 		var fs = require('fs');
 
 		fs.readFileSync(pathToFile, 'utf8').split("\n").forEach(
@@ -42,7 +41,7 @@ Game = function(totalTries) {
 	 * substituted for letters not yet correctly guessed.
 	 */
 	this.getDisplayText = function() {
-		return secretWord.getDisplayText();
+		return secretWord.getDisplayText((this.getTriesLeft() === 0) || this.isOver());
 	}
 	
 	/**
@@ -55,7 +54,6 @@ Game = function(totalTries) {
 	 * @param {Function} callback - a function to execute after selecting secret word
 	 */
 	this.selectWord = function(callback) {
-		console.log("selectWord()");
 		secretWord = new Word(wordList[getRandomInt(0, wordList.length)]);
 		callback(null);
 	}
@@ -84,9 +82,7 @@ Game = function(totalTries) {
 	 * @return {boolean} true if the latest guess has not previously been guessed
 	 */
 	this.isNewGuess = function(guess) {
-		console.log("\nisNewGuess() : " + guess);
 		var charcode = guess.toUpperCase().charCodeAt();
-		console.log("\ncharcode: " + charcode + " charcode - 65:" + (charcode - 65));
 		if(alphabucket[charcode - 65] !== true) {
 			alphabucket[charcode - 65] = true;
 			return true;
@@ -110,9 +106,7 @@ Game = function(totalTries) {
 	}
 
 	this.isOver = function() {
-		if(secretWord.isGuessed()) {
-			return true;
-		}
+		return secretWord.isGuessed();
 	}
 
 	this.getTriesLeft = function() {
