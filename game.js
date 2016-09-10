@@ -1,4 +1,4 @@
-Game = function() {
+Game = function(totalTries) {
 
 	//import Word Object
 	var Word = require("./word.js");
@@ -7,6 +7,7 @@ Game = function() {
 	var secretWord;// Word Object
 	var wordList = [];//array of lines from text file
 	var alphabucket = [];//stores previous guesses
+	var triesLeft = totalTries;//attempts remaining
 
 	/**
 	 * buildList()
@@ -32,15 +33,16 @@ Game = function() {
 	}
 
 	/**
-	 * getSecretWord()
+	 * getDisplayText()
 	 *
-	 * A getter method for the Game Object's secretWord Object
+	 * Outputs the text for a game of hangman, with blanks
+	 * substituted for letters not yet correctly guessed. 
 	 *
-	 * @return {Object} the Word Object
+	 * @return {string} the text for a game of hangman, with blanks
+	 * substituted for letters not yet correctly guessed.
 	 */
-	this.getSecretWord = function() {
-		console.log("getSecretWord()");
-		return secretWord;
+	this.getDisplayText = function() {
+		return secretWord.getDisplayText();
 	}
 	
 	/**
@@ -90,6 +92,31 @@ Game = function() {
 			return true;
 		}
 		return false;
+	}
+
+	this.makeGuess = function(guess, callback) {
+
+		guess = guess.toUpperCase().trim();
+		//if the guess matched any of the word's letters
+		if (secretWord.checkMatches(guess)) {
+			callback(null, true);
+		}
+		//else, none of the word's letters matched the guess
+		else {
+			//Remove life
+			triesLeft--;
+			callback(null, false);
+		}
+	}
+
+	this.isOver = function() {
+		if(secretWord.isGuessed()) {
+			return true;
+		}
+	}
+
+	this.getTriesLeft = function() {
+		return triesLeft;
 	}
 }
 
